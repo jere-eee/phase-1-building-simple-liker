@@ -3,8 +3,31 @@ const EMPTY_HEART = '♡'
 const FULL_HEART = '♥'
 
 // Your JavaScript code goes here!
-
-
+const hearts = Array.from(document.querySelectorAll('li span'))
+hearts.forEach((heart) => {
+  heart.addEventListener('click', (e) => {
+    e.preventDefault();
+    if (heart.classList.contains('activated-heart')) {
+      heart.innerHTML = EMPTY_HEART;
+      heart.className = ''
+    } else {
+      mimicServerCall()
+      .then((res) => {
+        heart.innerHTML = FULL_HEART;
+        heart.className = 'activated-heart';
+      })
+      .catch((err) => {
+        const errorMd = document.querySelector('.hidden')
+        errorMd.className = '';
+        document.querySelector('#modal p').innerHTML = err
+        function removeMd() {
+          return errorMd.className = 'hidden'
+        }
+        setTimeout(removeMd, 3000)
+      })
+    }
+  })
+})
 
 
 //------------------------------------------------------------------------------
